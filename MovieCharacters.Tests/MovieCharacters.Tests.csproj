@@ -12,4 +12,9 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MovieCharacters.Core\MovieCharacters.Core.csproj" />
+    <ProjectReference Include="..\MovieCharacters.WebApp\MovieCharacters.WebApp.csproj" />
+  </ItemGroup>
+
 </Project>
