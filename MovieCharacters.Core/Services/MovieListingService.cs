@@ -4,10 +4,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
 using MovieCharacters.Core.Interfaces;
 using MovieCharacters.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using MovieCharacters.Core.Exceptions;
 
 namespace MovieCharacters.Core.Services
 {
@@ -22,29 +24,49 @@ namespace MovieCharacters.Core.Services
 
         public List<ActorViewModel> GetSortedList()
         {
-            var list = _client.GetMovieList();
-            var actors = list
-                .SelectMany(
-                movie => movie.Roles, 
-                (movie, role) => new ActorSortingModel()
-                {
-                    Character = role.Name,
-                    Movie = movie.Name,
-                    Name = role.Actor
-                }).ToList();
+            List<Movie> list;
 
-            var sortedList = actors
-                .OrderBy(a => a.Name)
-                .GroupBy(a => a.Name)
-                .Select(g => new ActorViewModel()
-                {
-                    ActorName = g.Key,
-                    Characters = g.OrderBy(a => a.Movie)
-                    .Select(b =>
-                       new CharacterViewModel() { Movie = b.Movie, Name = b.Character }).ToList()
-                }).ToList();
+            try
+            {
+                list = _client.GetMovieList();
+            }
+            catch (Exception ex)
+            {
+                throw new ContentRetrievalException("Error retrieving movie list", ex);
+            }
 
-            return sortedList;
+            if (list == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var actors = list
+                    .SelectMany(
+                        movie => movie.Roles,
+                        (movie, role) => new ActorSortingModel(role.Actor, role.Name, movie.Name))
+                    .Distinct()
+                    .ToList();
+
+                var sortedList = actors
+                    .OrderBy(a => a.Name)
+                    .GroupBy(a => a.Name)
+                    .Select(g => new ActorViewModel()
+                    {
+                        ActorName = g.Key,
+                        Characters = g.OrderBy(a => a.Movie)
+                            .Select(b => new CharacterViewModel() { Movie = b.Movie, Name = b.Character })
+                            .ToList()
+                    })
+                    .ToList();
+
+                return sortedList;
+            }
+            catch (Exception ex)
+            {
+                throw new ListSortingException("Error sorting movie list", ex);
+            }
         }
     }
 }

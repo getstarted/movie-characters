@@ -4,14 +4,47 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+
 namespace MovieCharacters.Core.Models
 {
-    public class ActorSortingModel
+    public class ActorSortingModel : IEquatable<ActorSortingModel>
     {
-        public string Name { get; set; }
+        public ActorSortingModel(string name, string character, string movie)
+        {
+            Name = name;
+            Character = character;
+            Movie = movie;
+        }
 
-        public string Character { get; set; }
-        
-        public string Movie { get; set; }
+        public string Name { get; }
+
+        public string Character { get; }
+
+        public string Movie { get; }
+
+        public bool Equals(ActorSortingModel other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Name.Equals(other.Name) && Character.Equals(other.Character) && Movie.Equals(other.Movie);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashName = string.IsNullOrEmpty(Name) ? 0 : Name.GetHashCode();
+            var hashCharacter = string.IsNullOrEmpty(Character) ? 0 : Character.GetHashCode();
+            var hashMovie = string.IsNullOrEmpty(Movie) ? 0 : Movie.GetHashCode();
+
+            return hashName ^ hashCharacter ^ hashMovie;
+        }
     }
 }

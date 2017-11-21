@@ -7,6 +7,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MovieCharacters.Core.Clients;
+using MovieCharacters.Core.Exceptions;
 using MovieCharacters.Core.Services;
 
 namespace MovieCharacters.Tests.Core
@@ -48,6 +49,35 @@ namespace MovieCharacters.Tests.Core
         public void SortSampleList6_EmptyActorName()
         {
             CheckItem(Mother.MovieListingSample6, string.Empty, "Gorgie Lachance", "Stand By Me");
+        }
+
+        [TestMethod]
+        public void EmptyList6_NullReturn()
+        {
+            var client = new LocalStaticClient(string.Empty);
+            var movieListingService = new MovieListingService(client);
+            var sortedList = movieListingService.GetSortedList();
+
+            Assert.IsNull(sortedList, "Empty list should be null");
+        }
+
+        [TestMethod]
+        public void RemoteApiIncorrectResource_NullReturn()
+        {
+            var client = new RemoteApiClient(Mother.RemoteApiBaseUrl, "/does/not/exist/");
+            var movieListingService = new MovieListingService(client);
+            var sortedList = movieListingService.GetSortedList();
+
+            Assert.IsNull(sortedList, "Empty list should be null");
+        }
+
+        [TestMethod]
+        public void RemoteApiFailure_ReturnException()
+        {
+            var client = new RemoteApiClient("https://www.example.com", "/does/not/exist/");
+            var movieListingService = new MovieListingService(client);
+
+            Assert.ThrowsException<ContentRetrievalException>(() => movieListingService.GetSortedList(), "ContentRetrievalException should occur when incorrect URL is provided");
         }
 
         [TestMethod]
