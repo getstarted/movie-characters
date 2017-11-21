@@ -2,6 +2,8 @@
 
 This is a simple .NET Core Web Application used to consume a sample remote API.
 
+![application screengrab](https://github.com/getstarted/movie-characters/master/Resources/web-app-screen-grab.PNG)
+
 ### About this repository ###
 
 * The solution has been set up as a .Net Core application.
@@ -15,7 +17,7 @@ This is a simple .NET Core Web Application used to consume a sample remote API.
 ### Contribution guidelines ###
 
 * Run ReSharper and verify code before committing, please.
-* Make sure there is test cases to cover any changes made.
+* Make sure there are test cases to cover any changes made.
 
 ### Who do I talk to? ###
 * Emmanuel Tissera
