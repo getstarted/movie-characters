@@ -2,7 +2,7 @@
 
 This is a simple .NET Core Web Application used to consume a sample remote API.
 
-[[https://github.com/getstarted/movie-characters/blob/master/Resources/web-app-screen-grab.PNG|alt=application screengrab]]
+[[https://github.com/getstarted/movie-characters/blob/master/Resources/web-app-screen-grab.PNG]]
 
 ### About this repository ###
 
