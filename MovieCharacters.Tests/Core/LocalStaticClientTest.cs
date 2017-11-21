@@ -14,7 +14,7 @@ namespace MovieCharacters.Tests.Core
         [TestMethod]
         public void CheckIfMoviesExistInStaticList()
         {
-            var client = new LocalStaticClient(Mother.SampleJsonMovieListing);
+            var client = new LocalStaticClient(Mother.MovieListingSample1);
             var movieList = client.GetMovieList();
 
             Assert.IsTrue(movieList.Count > 0, "No movies found in retrieved list");
