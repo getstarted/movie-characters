@@ -79,8 +79,7 @@ namespace MovieCharacters.Tests.Core
 
             Assert.ThrowsException<ContentRetrievalException>(() => movieListingService.GetSortedList(), "ContentRetrievalException should occur when incorrect URL is provided");
         }
-
-        [TestMethod]
+        
         private void CheckItem(string sampleList, string firstActorName, string firstCharacterName, string firstMovieName)
         {
             var client = new LocalStaticClient(sampleList);
